@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adivina el número</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center">Adivina el número</h1>
+    <div class="text-center mt-3">
+      <button id="startBtn" class="btn btn-primary">Comenzar</button>
+    </div>
+    <div class="text-center mt-3" style="display: none;" id="guessSection">
+      <p class="mb-3">¿Es este tu número?</p>
+      <p class="lead" id="guessNumber"></p>
+      <button id="yesBtn" class="btn btn-success mr-2">Sí</button>
+      <button id="noBtn" class="btn btn-danger">No</button>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script>
+    // Función para adivinar el número utilizando búsqueda binaria
+    function guessNumber(min, max) {
+      let guess;
+      while (min <= max) {
+        guess = Math.floor((min + max) / 2);
+        let response = confirm(`¿Es tu número ${guess}?`);
+        if (response) {
+          return guess;
+        } else {
+          response = confirm(`¿Es mayor que ${guess}?`);
+          if (response) {
+            min = guess + 1;
+          } else {
+            max = guess - 1;
+          }
+        }
+      }
+    }
+
+    document.getElementById('startBtn').addEventListener('click', function() {
+      document.getElementById('guessSection').style.display = 'block';
+      document.getElementById('startBtn').style.display = 'none';
+      const guessedNumber = guessNumber(1, 100);
+      document.getElementById('guessNumber').innerText = guessedNumber;
+      document.getElementById('yesBtn').addEventListener('click', function() {
+        alert(`¡Tu número es ${guessedNumber}! ¡Excelente decisión!`);
+      });
+      document.getElementById('noBtn').addEventListener('click', function() {
+        location.reload(); // Reinicia el juego si el usuario dice que no es su número
+      });
+    });
+  </script>
+</body>
+</html>
